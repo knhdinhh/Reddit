@@ -38,8 +38,26 @@ for comment in submission.comments.list():
 # Sort results
 sorted_results = sorted(body_type_counts.items(), key=lambda x: x[1], reverse=True)
 
-# Display results
-print("Body Type Rating Summary:")
-print("=========================")
+# Calculate total votes for percentages
+total_votes = sum(count for _, count in sorted_results)
+
+# Print formatted results
+print("\nBody Type Preference Analysis")
+print("=============================")
+print(f"Total Votes: {total_votes}")
+print("\nRank | Body Type | Votes | Percentage")
+print("-----|-----------|-------|-----------")
+
+for rank, (body_type, count) in enumerate(sorted_results, 1):
+    percentage = (count / total_votes) * 100
+    print(f"{rank:4d} | {body_type:9d} | {count:5d} | {percentage:6.1f}%")
+
+# Add visualization
+print("\nTop Preferences Visualization:")
+max_bar_length = 40
+max_count = max(count for _, count in sorted_results)
+
 for body_type, count in sorted_results:
-    print(f"Body Type {body_type}: {count} votes")
+    bar_length = int((count / max_count) * max_bar_length)
+    bar = '▇' * bar_length
+    print(f"{body_type:2d} | {bar:{max_bar_length}} | {count}")
